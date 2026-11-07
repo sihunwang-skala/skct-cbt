@@ -184,6 +184,92 @@ for (let i = 1; i <= 8; i++) {
   }, fmt(oddNext), [fmt(oddNext - 3), fmt(oddNext - 1), fmt(oddNext + 1), fmt(even0 + 20)])
 }
 
+// Notion에서 추가로 확인된 세부 유형: 문단 배열, 문장 삽입, 비율 비교, 증감률,
+// 경우의 수, 확률, 방정식, 조건추리, 계차수열, 군수열, 조화수열.
+for (let i = 1; i <= 10; i++) {
+  add({ id: `GV-ORDER-${i}`, section: 'verbal', subtype: '문단 배열', targetSec: 70, verification: 'manual',
+    stem: '다음 문장들을 가장 자연스럽게 배열한 것은?', conditions: [
+      '(가) 새로운 제도를 평가하려면 먼저 평가 기준을 명확히 정해야 한다.',
+      `(나) 예를 들어 사례 ${i}에서는 비용만 비교했을 때와 이용자 만족도를 함께 보았을 때 결론이 달랐다.`,
+      '(다) 따라서 하나의 수치만으로 제도의 성과를 단정해서는 안 된다.',
+    ], explanation: '일반 원칙을 제시한 뒤 사례가 나오고, 따라서로 결론을 맺는다.', fastMethod: '예를 들어는 앞의 일반 문장을, 따라서 또는 그러므로는 앞의 근거를 필요로 한다.', commonMistake: '결론 표지인 따라서 문장을 첫 문장으로 둔다.',
+  }, '가-나-다', ['가-다-나', '나-가-다', '나-다-가', '다-가-나'])
+
+  add({ id: `GV-INSERT-${i}`, section: 'verbal', subtype: '문장 삽입', targetSec: 75, verification: 'manual',
+    stem: '제시 문장이 들어갈 위치로 가장 적절한 것은?', passage: `① 초기에 이 서비스는 PC에서만 이용할 수 있었다. ② 이후 모바일 앱이 출시되면서 이용 장소의 제약이 줄었다. ③ 이용 시간대도 낮 중심에서 아침과 저녁으로 넓어졌다. ④ 기업은 서버 용량을 늘려 변화에 대응했다.`,
+    conditions: ['제시 문장: 이러한 변화로 전체 이용자 수뿐 아니라 이용 방식도 달라졌다.'],
+    explanation: '이러한 변화는 모바일 출시와 이용 시간대 확대를 함께 가리키므로 두 설명 뒤에 와야 한다.', fastMethod: '지시어가 가리키는 복수의 선행 내용을 찾는다.', commonMistake: '이러한의 선행 내용이 하나만 제시된 위치에 넣는다.',
+  }, '③ 뒤', ['① 앞', '① 뒤', '② 뒤', '④ 뒤'])
+
+  const aNum = 45 + i, aDen = 60 + i, bNum = 38 + i, bDen = 50 + i, cNum = 30 + i, cDen = 45 + i
+  const ratios = [{ k: 'A', v: aNum / aDen }, { k: 'B', v: bNum / bDen }, { k: 'C', v: cNum / cDen }].sort((x, y) => y.v - x.v)
+  add({ id: `GD-RATIO-${i}`, section: 'data', subtype: '비율 비교', targetSec: 70,
+    stem: `A는 ${aNum}/${aDen}, B는 ${bNum}/${bDen}, C는 ${cNum}/${cDen}이다. 비율이 가장 큰 것은?`,
+    explanation: '각 비율을 교차곱 또는 근삿값으로 비교한다.', fastMethod: '두 비율씩 교차곱해 나눗셈을 피한다.', commonMistake: '분자만 비교하거나 분모가 작은 것을 무조건 크게 본다.',
+  }, ratios[0].k, ['A와 B가 같다', 'B와 C가 같다', ...['A', 'B', 'C'].filter((x) => x !== ratios[0].k)])
+
+  const before = 200 + i * 20, rate = 10 + i, after = before * (1 + rate / 100)
+  add({ id: `GD-CHANGE-${i}`, section: 'data', subtype: '증감률', targetSec: 60,
+    stem: `어떤 값이 ${before}에서 ${fmt(after)}로 증가했다. 증가율은?`, explanation: `증가량 ${fmt(after - before)}을 기준값 ${before}으로 나누면 ${rate}%이다.`,
+    fastMethod: '변화량을 이전 값으로 나눈다.', commonMistake: '변화량을 이후 값으로 나눈다.',
+  }, `${rate}%`, [`${rate - 2}%`, `${rate - 1}%`, `${rate + 1}%`, `${rate + 2}%`])
+
+  const n = 5 + i
+  const comb = n * (n - 1) / 2
+  add({ id: `GM-COMB-${i}`, section: 'math', subtype: '경우의 수/조합', targetSec: 65,
+    stem: `서로 다른 ${n}명 중 순서를 고려하지 않고 대표 2명을 고르는 방법의 수는?`, explanation: `${n}C2=${n}×${n - 1}/2=${comb}이다.`,
+    fastMethod: '두 명 선택은 n(n-1)/2를 사용한다.', commonMistake: '순서를 고려해 n(n-1)로 계산한다.',
+  }, fmt(comb), [fmt(n * (n - 1)), fmt(comb - n), fmt(comb + n), fmt(n ** 2)])
+
+  const red = 2 + i, blue = 3 + i, total = red + blue
+  add({ id: `GM-PROB-${i}`, section: 'math', subtype: '확률', targetSec: 55,
+    stem: `주머니에 빨간 공 ${red}개와 파란 공 ${blue}개가 있다. 한 개를 무작위로 꺼낼 때 빨간 공일 확률은?`, explanation: `전체 ${total}개 중 빨간 공이 ${red}개이므로 ${red}/${total}이다.`,
+    fastMethod: '원하는 경우의 수를 전체 경우의 수로 나눈다.', commonMistake: '빨간 공 수를 파란 공 수로 나눈다.',
+  }, `${red}/${total}`, [`${blue}/${total}`, `${red}/${blue}`, `1/${total}`, `${red - 1}/${total}`])
+
+  const rooms = 4 + i, basePeople = rooms * 4 + 3
+  add({ id: `GM-EQ-${i}`, section: 'math', subtype: '방정식/인원 배치', targetSec: 75,
+    stem: `사람 ${basePeople}명을 방 ${rooms}개에 배치한다. 모든 방에 최소 4명씩 넣으면 남는 사람은 몇 명인가?`, explanation: `${rooms}×4=${rooms * 4}명을 먼저 배치하면 ${basePeople - rooms * 4}명이 남는다.`,
+    fastMethod: '최소 인원을 모든 방에 먼저 배치한 뒤 나머지를 계산한다.', commonMistake: '방 하나에만 최소 인원을 적용한다.',
+  }, fmt(3), ['1', '2', '4', '5'])
+
+  const floorPeople = ['A', 'B', 'C', 'D', 'E'].map((x) => `${x}${i}`)
+  add({ id: `GR-FLOOR-${i}`, section: 'reasoning', subtype: '층수/위치', targetSec: 80,
+    stem: '다섯 사람이 서로 다른 1층부터 5층에 한 명씩 있을 때 3층에 있는 사람은?', conditions: [
+      `${floorPeople[0]}는 ${floorPeople[1]}보다 위층이다.`, `${floorPeople[1]}는 ${floorPeople[2]}보다 위층이다.`, `${floorPeople[2]}는 ${floorPeople[3]}보다 위층이다.`, `${floorPeople[3]}는 ${floorPeople[4]}보다 위층이다.`,
+    ], explanation: `위에서부터 ${floorPeople.join(', ')} 순서이므로 3층은 ${floorPeople[2]}이다.`, fastMethod: '모든 비교조건을 하나의 긴 chain으로 연결한다.', commonMistake: '위층과 앞선다는 표현의 방향을 뒤집는다.',
+  }, floorPeople[2], [floorPeople[0], floorPeople[1], floorPeople[3], floorPeople[4]])
+
+  add({ id: `GR-SELECT-${i}`, section: 'reasoning', subtype: '선택/조합 조건', targetSec: 85,
+    stem: 'A, B, C, D 중 정확히 두 명을 선발한다. 다음 조건을 모두 만족하는 조합은?', conditions: ['A를 선발하면 B도 선발한다.', 'C와 D는 함께 선발할 수 없다.', 'B와 C 중 적어도 한 명은 선발한다.'],
+    explanation: '가능한 두 명 조합을 조건에 대입하면 A와 B가 모든 조건을 만족한다.', fastMethod: '선지를 조건에 직접 대입하고 모순이 하나라도 생기면 제거한다.', commonMistake: 'A이면 B를 B이면 A로 뒤집는다.',
+  }, 'A, B', ['A, C', 'A, D', 'C, D', 'A만 선발'])
+}
+
+for (let i = 1; i <= 8; i++) {
+  const first = 3 + i, diffs = [2, 4, 6, 8, 10, 12], seq = [first]
+  for (const d of diffs.slice(0, 5)) seq.push(seq.at(-1) + d)
+  const next = seq.at(-1) + diffs[5]
+  add({ id: `GS-DIFF-${i}`, section: 'sequence', subtype: '계차수열', targetSec: 45,
+    stem: '다음 수열의 빈칸에 들어갈 수는?', conditions: [`${seq.join(', ')}, ( )`], explanation: `계차가 2, 4, 6, 8, 10으로 2씩 증가하므로 다음 계차는 12, 정답은 ${next}이다.`,
+    fastMethod: '원수열의 차이를 아래 줄에 맞춰 적는다.', commonMistake: '마지막 항에 다음 계차가 아니라 이전 계차를 더한다.',
+  }, fmt(next), [fmt(next - 4), fmt(next - 2), fmt(next + 2), fmt(next + 4)])
+
+  const sums = [12 + i, 15 + i, 18 + i, 21 + i]
+  const triples = sums.map((sum, k) => [2 + k, 3 + k, sum - 5 - 2 * k])
+  const missing = triples[3][2]
+  add({ id: `GS-GROUP-${i}`, section: 'sequence', subtype: '군수열/묶음 합', targetSec: 50,
+    stem: '각 괄호 안 세 수가 같은 규칙을 따를 때 빈칸은?', conditions: [`${triples.slice(0, 3).map((x) => `(${x.join(', ')})`).join(' / ')} / (${triples[3][0]}, ${triples[3][1]}, ?)`],
+    explanation: `각 묶음의 합이 ${sums.join(', ')}로 3씩 증가하므로 마지막 묶음의 합은 ${sums[3]}, 빈칸은 ${missing}이다.`, fastMethod: '세 수를 묶어 합, 곱, 평균을 먼저 확인한다.', commonMistake: '전체 숫자를 하나의 긴 수열로 본다.',
+  }, fmt(missing), [fmt(missing - 2), fmt(missing - 1), fmt(missing + 1), fmt(missing + 2)])
+
+  const dens = [2 + i, 4 + i, 6 + i, 8 + i, 10 + i]
+  add({ id: `GS-HARM-${i}`, section: 'sequence', subtype: '조화수열/분수', targetSec: 45,
+    stem: '다음 수열의 빈칸에 들어갈 수는?', conditions: [`1/${dens.slice(0, 4).join(', 1/')}, ( )`], explanation: `분모가 2씩 증가하므로 다음 항은 1/${dens[4]}이다.`,
+    fastMethod: '분자가 1로 고정되면 역수를 취해 분모 수열을 본다.', commonMistake: '분수 전체의 차이를 직접 계산한다.',
+  }, `1/${dens[4]}`, [`1/${dens[4] - 1}`, `1/${dens[4] + 1}`, `2/${dens[4]}`, `1/${dens[4] + 2}`])
+}
+
 const ids = new Set()
 for (const q of questions) {
   if (ids.has(q.id)) throw new Error(`중복 id: ${q.id}`)
