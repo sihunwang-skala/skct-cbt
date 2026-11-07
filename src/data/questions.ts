@@ -1,0 +1,212 @@
+import type { Question } from '../engine/types'
+
+const SRC = '자체 제작(공식 기출 아님)'
+
+export const QUESTIONS: Question[] = [
+  // ───────── 언어이해 ─────────
+  {
+    id: 'V-001', section: 'verbal', subtype: '내용 일치/불일치', difficulty: 1, targetSec: 60,
+    stem: '다음 글의 내용과 일치하지 않는 것은?',
+    passage:
+      '도시의 열섬 현상은 건물과 도로의 콘크리트·아스팔트가 낮 동안 흡수한 열을 밤에도 서서히 방출하기 때문에 나타난다. 녹지는 증발산 작용으로 주변 기온을 낮추는데, 같은 면적이라면 나무가 잔디보다 그늘 효과가 더해져 냉각 효과가 크다. 그러나 녹지를 늘리는 것만으로는 한계가 있어, 건물 옥상에 햇빛을 반사하는 도료를 바르는 등의 보완책도 함께 논의된다.',
+    choices: [
+      '열섬 현상은 낮에 흡수된 열이 밤에 방출되며 나타난다.',
+      '녹지는 증발산 작용으로 주변 기온을 낮춘다.',
+      '같은 면적이라면 나무가 잔디보다 냉각 효과가 크다.',
+      '녹지 확대만으로 열섬 현상을 충분히 해결할 수 있다.',
+      '옥상 반사 도료가 보완책으로 논의된다.',
+    ],
+    answer: 3,
+    explanation: '마지막 문장에서 녹지 확대만으로는 한계가 있다고 했으므로 ④가 글과 어긋난다.',
+    fastMethod: '선지의 "충분히/만으로" 같은 단정 표현을 먼저 지문과 대조한다.',
+    commonMistake: '"한계가 있어"를 놓치고 보완책 문장만 읽는 경우.',
+    source: SRC, verification: 'manual',
+  },
+  {
+    id: 'V-002', section: 'verbal', subtype: '중심 주장/주제', difficulty: 1, targetSec: 50,
+    stem: '다음 글의 주제로 가장 적절한 것은?',
+    passage:
+      '많은 사람이 멀티태스킹이 효율을 높인다고 믿지만, 연구에 따르면 과제를 전환할 때마다 주의를 되돌리는 데 시간이 든다. 결과적으로 여러 일을 동시에 하는 사람은 한 가지씩 처리하는 사람보다 오류가 많고 총 소요 시간도 길어지는 경향이 있다.',
+    choices: [
+      '멀티태스킹은 오히려 효율을 떨어뜨리는 경향이 있다.',
+      '과제 전환 속도는 훈련으로 크게 높일 수 있다.',
+      '오류가 적은 사람이 멀티태스킹에 능하다.',
+      '효율적인 업무에는 충분한 휴식이 필요하다.',
+      '연구 결과는 개인에 따라 일관되지 않다.',
+    ],
+    answer: 0,
+    explanation: '전환 비용 때문에 멀티태스킹은 오류와 소요 시간을 늘린다는 것이 글 전체의 요지다.',
+    fastMethod: '첫 문장의 통념 → "그러나/연구에 따르면" 이후가 주장.',
+    commonMistake: '지문에 없는 훈련·휴식 이야기에 끌려가는 경우.',
+    source: SRC, verification: 'manual',
+  },
+  {
+    id: 'V-003', section: 'verbal', subtype: '추론', difficulty: 2, targetSec: 70,
+    stem: '다음 글을 읽고 추론한 내용으로 가장 적절한 것은?',
+    passage:
+      '어떤 식당은 메뉴판의 맨 위에 가장 비싼 메뉴를 배치한다. 손님 대부분이 그 메뉴를 주문하지는 않지만, 그 아래에 놓인 중간 가격의 메뉴가 상대적으로 합리적으로 보이게 되기 때문이다. 이 식당의 중간 가격 메뉴의 주문 비중은 가장 비싼 메뉴를 없앴을 때보다 높았다.',
+    choices: [
+      '가장 비싼 메뉴는 매출에 직접 기여하지 못한다.',
+      '손님은 가격보다 메뉴의 양을 우선하여 선택한다.',
+      '가장 비싼 메뉴의 존재가 중간 가격 메뉴의 선택 가능성을 높일 수 있다.',
+      '메뉴판의 위쪽에 있는 메뉴일수록 주문이 많다.',
+      '이 식당은 가장 비싼 메뉴를 곧 없앨 것이다.',
+    ],
+    answer: 2,
+    explanation: '비싼 메뉴가 있을 때 중간 메뉴 비중이 더 높았다고 했으므로 ③이 추론된다. ①은 지문에서 판단할 수 없다.',
+    fastMethod: '"~할 수 있다" 수준의 약한 추론 선지가 정답인 경우가 많다.',
+    commonMistake: '① 처럼 지문에 근거 없는 단정을 정답으로 고르는 경우.',
+    source: SRC, verification: 'manual',
+  },
+
+  // ───────── 자료해석 ─────────
+  {
+    id: 'D-001', section: 'data', subtype: '증가율 비교', difficulty: 1, targetSec: 60,
+    stem: '다음 표는 세 지역의 인구를 나타낸 것이다. 2023년 대비 2024년 인구 증가율이 가장 큰 지역은?',
+    table: {
+      caption: '지역별 인구', unit: '(단위: 천 명)',
+      header: ['지역', '2023년', '2024년'],
+      rows: [['A', '400', '440'], ['B', '250', '300'], ['C', '200', '210']],
+    },
+    choices: ['A', 'B', 'C', 'A와 B가 같다', 'B와 C가 같다'],
+    answer: 1,
+    explanation: 'A 10%, B 20%, C 5% → B.',
+    fastMethod: '증가분÷기준값을 약분: 40/400, 50/250, 10/200.',
+    commonMistake: '증가량(A 40 vs B 50)만 비교해 기준값을 무시.',
+    source: SRC, verification: 'script',
+  },
+  {
+    id: 'D-002', section: 'data', subtype: '비중 / %p', difficulty: 2, targetSec: 80,
+    stem: '다음 표에서 전체 매출 대비 B제품 매출 비중은 2023년에서 2024년 사이 몇 %p 변했는가?',
+    table: {
+      caption: '제품별 매출', unit: '(단위: 억 원)',
+      header: ['구분', 'A제품', 'B제품', '합계'],
+      rows: [['2023년', '300', '100', '400'], ['2024년', '280', '120', '400']],
+    },
+    choices: ['3%p 감소', '5%p 증가', '5%p 감소', '20%p 증가', '20% 증가'],
+    answer: 1,
+    explanation: '2023년 100/400=25%, 2024년 120/400=30% → 5%p 증가.',
+    fastMethod: '합계가 같으므로 B 증가분 20/400 = 5%p.',
+    commonMistake: '%와 %p 혼동(B 매출 증가율 20%).',
+    source: SRC, verification: 'script',
+  },
+  {
+    id: 'D-003', section: 'data', subtype: '평균/합계', difficulty: 2, targetSec: 70,
+    stem: '다음 표에서 4개 팀의 평균 판매량은? (단위: 개)',
+    table: {
+      caption: '팀별 판매량', unit: '(단위: 개)',
+      header: ['팀', '1팀', '2팀', '3팀', '4팀'],
+      rows: [['판매량', '120', '95', '140', '85']],
+    },
+    choices: ['100', '105', '110', '115', '120'],
+    answer: 2,
+    explanation: '합계 440 ÷ 4 = 110.',
+    fastMethod: '기준 100 대비 +20, −5, +40, −15 → 합 +40 → 평균 +10.',
+    commonMistake: '합계 계산 실수(440).',
+    source: SRC, verification: 'script',
+  },
+
+  // ───────── 창의수리 ─────────
+  {
+    id: 'M-001', section: 'math', subtype: '거리·속력·시간', difficulty: 2, targetSec: 70,
+    stem: 'A지점에서 B지점까지 시속 40km로 갔다가 같은 길을 시속 60km로 돌아왔다. 왕복 평균 속력은?',
+    choices: ['46km/h', '48km/h', '50km/h', '52km/h', '54km/h'],
+    answer: 1,
+    explanation: '거리를 d라 하면 총 시간 d/40+d/60=d/24, 총 거리 2d → 평균 48km/h.',
+    fastMethod: '조화평균 2ab/(a+b) = 2×40×60/100.',
+    commonMistake: '산술평균 50km/h을 고르는 경우.',
+    source: SRC, verification: 'script',
+  },
+  {
+    id: 'M-002', section: 'math', subtype: '농도', difficulty: 2, targetSec: 80,
+    stem: '농도 10%의 소금물 200g에 소금을 더 넣어 농도 20%의 소금물을 만들려고 한다. 넣어야 하는 소금의 양은?',
+    choices: ['20g', '22g', '25g', '28g', '30g'],
+    answer: 2,
+    explanation: '(20+x)/(200+x)=0.2 → 20+x=40+0.2x → x=25.',
+    fastMethod: '물의 양 180g은 불변: 180이 80%이므로 전체 225g → 소금 45g, 기존 20g → 25g 추가.',
+    commonMistake: '전체 질량이 변하는 것을 무시하고 200g×10%p=20g로 계산.',
+    source: SRC, verification: 'script',
+  },
+  {
+    id: 'M-003', section: 'math', subtype: '일률', difficulty: 1, targetSec: 60,
+    stem: '어떤 일을 혼자 하면 A는 10일, B는 15일이 걸린다. 두 사람이 함께 하면 며칠이 걸리는가?',
+    choices: ['5일', '6일', '7일', '8일', '9일'],
+    answer: 1,
+    explanation: '전체 일을 30으로 두면 A 3/일, B 2/일 → 5/일 → 6일.',
+    fastMethod: '최소공배수 30을 전체 일의 양으로 설정.',
+    commonMistake: '(10+15)/2=12.5 처럼 평균을 내는 경우.',
+    source: SRC, verification: 'script',
+  },
+
+  // ───────── 언어추리 ─────────
+  {
+    id: 'L-001', section: 'reasoning', subtype: '명제', difficulty: 1, targetSec: 60,
+    stem: '다음 명제가 모두 참일 때, 반드시 참인 것은?',
+    conditions: ['모든 A는 B이다.', '모든 B는 C이다.', '어떤 D는 A이다.'],
+    choices: ['모든 D는 C이다.', '어떤 D는 C이다.', '모든 C는 A이다.', '어떤 C는 D가 아니다.', 'A가 아닌 B는 없다.'],
+    answer: 1,
+    explanation: 'A⊂B⊂C이고 일부 D가 A이므로 그 D는 C에도 속한다 → ②.',
+    fastMethod: '벤 다이어그램: A⊂B⊂C 안쪽에 D의 일부가 걸쳐 있음.',
+    commonMistake: '"어떤"을 "모든"으로 확대 해석(①).',
+    source: SRC, verification: 'script',
+  },
+  {
+    id: 'L-002', section: 'reasoning', subtype: '순위/줄세우기', difficulty: 2, targetSec: 90,
+    stem: '다음 조건에 따라 A~E 다섯 명이 달리기 순위를 정했다(동순위 없음). 3등은 누구인가?',
+    conditions: ['C는 A보다 빠르고, A는 B보다 빠르다.', 'D는 C 바로 다음 순위이다.', 'E는 꼴찌(5등)이다.'],
+    choices: ['A', 'B', 'C', 'D', 'E'],
+    answer: 0,
+    explanation: 'E=5등. C 바로 뒤가 D이고 C<A<B이므로 C(1) D(2) A(3) B(4) E(5).',
+    fastMethod: 'E를 5등으로 고정 후 "C-D" 묶음을 한 덩어리로 배치.',
+    commonMistake: 'D를 A와 B 사이에 넣는 경우(D는 C 바로 뒤).',
+    source: SRC, verification: 'script',
+  },
+  {
+    id: 'L-003', section: 'reasoning', subtype: '진실과 거짓', difficulty: 2, targetSec: 90,
+    stem: '갑, 을, 병 중 범인은 정확히 한 명이고, 세 사람 중 한 명만 거짓을 말한다. 범인이 될 수 없는 사람은?',
+    conditions: ['갑: "나는 범인이 아니다."', '을: "범인은 병이다."', '병: "을의 말은 거짓이다."'],
+    choices: ['갑', '을', '병', '알 수 없다', '범인은 없다'],
+    answer: 0,
+    explanation: '을과 병의 진술은 서로 모순이라 둘 중 정확히 하나가 거짓 → 갑은 참을 말하므로 범인이 아니다. (을이 거짓이면 범인=을, 병이 거짓이면 범인=병)',
+    fastMethod: '서로 모순되는 두 진술 쌍을 먼저 찾아 거짓 후보를 좁힌다.',
+    commonMistake: '"한 명만 거짓" 조건을 놓치고 모두 참으로 가정.',
+    source: SRC, verification: 'script',
+  },
+
+  // ───────── 수열추리 ─────────
+  {
+    id: 'S-001', section: 'sequence', subtype: '교대 연산', difficulty: 2, targetSec: 40,
+    stem: '다음 수열의 빈칸에 들어갈 알맞은 수는?',
+    conditions: ['3, 5, 10, 12, 24, 26, 52, (  )'],
+    choices: ['54', '56', '58', '104', '108'],
+    answer: 0,
+    explanation: '+2, ×2를 번갈아 적용 → 52+2=54.',
+    fastMethod: '앞 두 걸음의 연산을 확정한 뒤 마지막 한 걸음만 계산.',
+    commonMistake: '직전 연산(×2)을 이어 104로 착각.',
+    source: SRC, verification: 'script',
+  },
+  {
+    id: 'S-002', section: 'sequence', subtype: '피보나치형', difficulty: 1, targetSec: 30,
+    stem: '다음 수열의 빈칸에 들어갈 알맞은 수는?',
+    conditions: ['2, 3, 5, 8, 13, 21, (  )'],
+    choices: ['29', '32', '34', '36', '42'],
+    answer: 2,
+    explanation: '앞의 두 항의 합 → 13+21=34.',
+    fastMethod: '세 번째 항부터 앞 두 항의 합임을 2회 검증.',
+    commonMistake: '계차(+1,+2,+3,…)로 착각해 29.',
+    source: SRC, verification: 'script',
+  },
+  {
+    id: 'S-003', section: 'sequence', subtype: '계승/곱셈 증가', difficulty: 2, targetSec: 40,
+    stem: '다음 수열의 빈칸에 들어갈 알맞은 수는?',
+    conditions: ['1, 2, 6, 24, 120, (  )'],
+    choices: ['240', '360', '480', '600', '720'],
+    answer: 4,
+    explanation: '×2, ×3, ×4, ×5, 다음은 ×6 → 120×6=720.',
+    fastMethod: '비율 2,3,4,5가 1씩 증가함을 확인.',
+    commonMistake: '비율을 ×5로 고정해 600.',
+    source: SRC, verification: 'script',
+  },
+]
+
+export const BANK: Record<string, Question> = Object.fromEntries(QUESTIONS.map((q) => [q.id, q]))
