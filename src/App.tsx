@@ -4,6 +4,7 @@ import { Result } from './components/Result'
 import { Dashboard } from './components/Dashboard'
 import { Stage } from './components/Stage'
 import { recordSession, saveSession } from './engine/coach'
+import { loadPrivateBank, type PrivateBankInfo } from './data/bank'
 import { PROFILES } from './data/profiles'
 import { BANK, QUESTIONS } from './data/questions'
 import { createSession, finishSection, goto, remainingMs, resume, select, tick } from './engine/session'
@@ -26,6 +27,8 @@ export default function App() {
   const [memo, setMemo] = useState('')
   const [paint, setPaint] = useState('')
   const [fsLost, setFsLost] = useState(false)
+  const [bankInfo, setBankInfo] = useState<PrivateBankInfo | null>(null)
+  useEffect(() => { loadPrivateBank().then(setBankInfo) }, [])
   const [cfg, setCfg] = useState<Partial<ExamConfig>>({})
 
   const update = useCallback((fn: (p: Session, t: number) => Session) => {
@@ -89,14 +92,20 @@ export default function App() {
           <label><input type="checkbox" checked={cfg.toolsPersist ?? true} onChange={(e) => setCfg({ ...cfg, toolsPersist: e.target.checked })} /> 문항 이동 시 메모·그림판 유지</label>
         </div>
         {PROFILES.map((p) => {
-          const ok = p.sections.every((sec) => QUESTIONS.filter((q) => q.section === sec.id).length >= sec.count)
+          const ok = p.sections.every((sec) => QUESTIONS.filter((q) => q.section === sec.id && q.verification !== 'unverified').length >= sec.count)
           return (
             <div className="profile" key={p.id}>
               <button className="btn primary" disabled={!ok} data-testid={`start-${p.id}`} onClick={() => start(p.id)}>{p.name}</button>
-              <small>{ok ? p.note : `${p.note} (현재 문제은행 ${QUESTIONS.length}문항 — 부족)`}</small>
+              <small>{ok ? p.note : `${p.note} (현재 사용 가능 ${QUESTIONS.filter((q) => q.verification !== 'unverified').length}문항 — 부족)`}</small>
             </div>
           )
         })}
+        {bankInfo?.available && (
+          <small className="hint" data-testid="bank-info">
+            비공개 문제은행: {bankInfo.loaded}문항 로드{bankInfo.unverified ? ` (검증 대기 ${bankInfo.unverified}문항은 모의고사 제외)` : ''}
+            {bankInfo.errors.length ? ` · 오류 ${bankInfo.errors.length}건: ${bankInfo.errors.slice(0, 3).join(' / ')}` : ''}
+          </small>
+        )}
         <Dashboard />
         <small className="hint">시작하면 전체화면으로 전환됩니다 (1920×1080 기준 화면을 비례 축소/확대).</small>
       </div>

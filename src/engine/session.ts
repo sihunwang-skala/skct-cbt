@@ -4,7 +4,7 @@ import type { ExamProfile, Question, Session } from './types'
 
 export function createSession(profile: ExamProfile, bank: Question[], now: number): Session {
   const sectionQuestions = profile.sections.map((sec) =>
-    bank.filter((q) => q.section === sec.id && q.verification !== undefined).slice(0, sec.count).map((q) => q.id),
+    bank.filter((q) => q.section === sec.id && q.verification !== 'unverified').slice(0, sec.count).map((q) => q.id),
   )
   return {
     id: `s${now}`,

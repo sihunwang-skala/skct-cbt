@@ -3,3 +3,7 @@ dist
 test-results
 private/
 .env
+*.pdf
+*.epub
+*.mobi
+/inbox/

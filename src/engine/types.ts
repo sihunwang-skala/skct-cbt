@@ -24,7 +24,10 @@ export interface Question {
   commonMistake: string
   source: string
   /** script = independently verified in src/data/questions.test.ts; manual = author review only */
-  verification: 'script' | 'manual'
+  /** unverified = 가져오기 직후, 정답 미검증 → 모의고사에서 제외 */
+  verification: 'script' | 'manual' | 'unverified'
+  /** 비공개 이미지 파일명(private/images/). 표·그래프 등 원본 영역 렌더링용 */
+  image?: string
 }
 
 export interface SectionSpec {

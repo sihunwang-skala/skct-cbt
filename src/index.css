@@ -92,3 +92,4 @@ details.ok summary { color:#0a6; } details.ng summary { color:#c00; }
 .tabs button { padding:12px 0 !important; }
 .qpane.wide { padding-right:0; }
 .choices { gap:0 !important; } .choices button { padding:7px 16px !important; }
+.qimg { max-width:100%; max-height:520px; display:block; margin:0 0 24px; border:1px solid var(--line); }

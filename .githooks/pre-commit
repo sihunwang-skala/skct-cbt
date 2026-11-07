@@ -1,0 +1,6 @@
+#!/bin/sh
+# 비공개 자료(교재/e-book/개인 문제은행)가 이 저장소에 커밋되는 것을 차단
+bad=$(git diff --cached --name-only | grep -E '^private/|\.(pdf|epub|mobi)$' | grep -v '^private/\.gitkeep$')
+if [ -n "$bad" ]; then
+  echo "커밋 차단: 비공개 자료로 보이는 파일이 포함되어 있습니다:"; echo "$bad"; exit 1
+fi

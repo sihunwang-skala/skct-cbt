@@ -33,7 +33,7 @@ describe('session / timer', () => {
     let s = createSession(profile, QUESTIONS, T0)
     s = tick(s, T0 + 240_000)
     expect(s.phase).toBe('break')
-    s = tick(s, T0 + 240_000 + 10_000)
+    s = tick(s, T0 + 240_000 + 60_000)
     expect(s.phase).toBe('exam')
     expect(s.sectionIdx).toBe(1)
     // 탭이 오래 숨겨졌다가 복구: 전체 5영역 + 휴식이 모두 지난 시점

@@ -53,6 +53,7 @@ export function ExamScreen({ s, now, memo, paint, setMemo, setPaint, onSelect, o
           {q.conditions && (
             <ul className="conds">{q.conditions.map((c, i) => <li key={i}>{c}</li>)}</ul>
           )}
+          {q.image && <img className="qimg" src={`/__private/img/${q.image}`} alt="문제 이미지" />}
           {q.table && (
             <div className="tbl-wrap">
               <div className="tbl-cap"><b>[{q.table.caption}]</b><span>{q.table.unit}</span></div>
