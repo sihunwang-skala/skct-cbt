@@ -82,7 +82,7 @@ export default function App() {
     body = (
       <div className="start" data-testid="start">
         <div className="logo">SKCT 인지검사 연습 시뮬레이터</div>
-        <p className="disclaimer">개인 학습용 비공식 시뮬레이터입니다. SK그룹 또는 공식 SKCT 서비스와 무관합니다.</p>
+        <p className="disclaimer">개인 학습용 비공식 시뮬레이터입니다. SK그룹·SKCT 운영 주체와 제휴/승인 관계가 없으며, 문제는 자체 제작 연습문제입니다(실제 기출 아님).</p>
         <div className="opts">
           <label><input type="checkbox" checked={cfg.allowBack ?? false} onChange={(e) => setCfg({ ...cfg, allowBack: e.target.checked })} /> 이전 문항 복귀 허용 (실제 규칙 미확인)</label>
           <label><input type="checkbox" checked={cfg.allowSkip ?? true} onChange={(e) => setCfg({ ...cfg, allowSkip: e.target.checked })} /> 미응답으로 다음 문항 이동 허용</label>
