@@ -8,6 +8,8 @@ SKCT 인지검사 온라인 응시 화면을 최대한 비슷하게 재현하는
 - 영역별 마감시각 기반 타이머(새로고침·백그라운드에도 정확), 영역 사이 휴식 1분
 - 언어이해: 도구 없음(문제 전체 폭) / 그 외: 메모장·그림판 탭 + 계산기
 - 시험 중 정답·해설 비노출, 종료 후 채점·복기·학습 기록 대시보드
+- 실전 모드는 매회 Seed 기반 무작위 출제, 유형 집중 모드는 영역, 세부 유형, 난도, 학습 상태, 문항 수, 시간 필터 지원
+- 미풀이, 최근 오답, 최근 시간 초과 문항만 골라 재훈련 가능. 동일한 Random Seed로 같은 세트 재현
 - 문제은행: 자체 제작 15문항(공식 기출 아님), 계산형·논리형은 `src/data/questions.test.ts`에서 독립 검증
 
 ## 실행
@@ -16,7 +18,11 @@ npm install
 npm run dev      # http://localhost:5173
 npm test         # 단위 테스트
 npm run e2e      # Playwright (스크린샷: e2e/shots)
+npm run privacy-check # private 자료가 index·staging·history·build에 없는지 검사
+npm run generate-bank # Notion 유형 체계를 반영한 자체 생성 문제를 private/bank에 생성
 ```
+
+`npm install` 시 `.githooks`가 활성화되고, push 직전에 privacy check가 자동 실행됩니다. `git commit`은 로컬 기록만 만들며 원격 전송은 `git push` 또는 별도 Sync를 실행할 때만 발생합니다.
 
 ## 근거와 미확인 사항
 - 확인: 공식 응시자 안내서(영역당 20문항·15분, 권장 1920×1080, 전체화면), 사용자 기억(쉬는 시간 1분, 언어이해만 도구 없음)

@@ -156,3 +156,15 @@ test('timer digits do not shift layout as time changes', async ({ page }) => {
   const w = await page.evaluate(() => (document.querySelector('[data-testid=timer]') as HTMLElement).offsetWidth)
   expect(w).toBe(140)
 })
+
+test('focus mode filters a subtype and starts only matching questions', async ({ page }) => {
+  await page.getByTestId('mode-focus').click()
+  await page.getByLabel('농도').check()
+  await page.getByTestId('focus-count').fill('1')
+  await page.getByTestId('focus-seed').fill('repeatable-set')
+  await expect(page.getByTestId('focus-available')).toHaveText('1')
+  await page.getByTestId('start-focus').click()
+  await expect(page.getByTestId('exam')).toBeVisible()
+  const ids = await page.evaluate(() => JSON.parse(localStorage.getItem('skct-cbt:session')!).sectionQuestions)
+  expect(ids).toEqual([['M-002']])
+})

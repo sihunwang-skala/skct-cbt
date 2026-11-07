@@ -3,19 +3,23 @@ import { ExamScreen } from './components/ExamScreen'
 import { Result } from './components/Result'
 import { Dashboard } from './components/Dashboard'
 import { Stage } from './components/Stage'
-import { recordSession, saveSession } from './engine/coach'
+import { FocusSetup, type FocusRequest } from './components/FocusSetup'
+import { loadHistory, recordSession, saveSession } from './engine/coach'
 import { loadPrivateBank, type PrivateBankInfo } from './data/bank'
 import { PROFILES } from './data/profiles'
 import { BANK, QUESTIONS } from './data/questions'
 import { createSession, finishSection, goto, remainingMs, resume, select, tick } from './engine/session'
-import type { ExamConfig, Session } from './engine/types'
+import type { ExamConfig, ExamProfile, Session } from './engine/types'
 
 const KEY = 'skct-cbt:session'
 const load = (): Session | null => {
   try { const r = localStorage.getItem(KEY); return r ? (JSON.parse(r) as Session) : null } catch { return null }
 }
 const save = (s: Session | null) => {
-  try { s ? localStorage.setItem(KEY, JSON.stringify(s)) : localStorage.removeItem(KEY) } catch { /* ignore */ }
+  try {
+    if (s) localStorage.setItem(KEY, JSON.stringify(s))
+    else localStorage.removeItem(KEY)
+  } catch { /* ignore */ }
 }
 
 export default function App() {
@@ -23,13 +27,14 @@ export default function App() {
     const p = load()
     return p && p.phase !== 'done' ? resume(p, Date.now()) : p
   })
-  const [now, setNow] = useState(Date.now())
+  const [now, setNow] = useState(() => Date.now())
   const [memo, setMemo] = useState('')
   const [paint, setPaint] = useState('')
   const [fsLost, setFsLost] = useState(false)
   const [bankInfo, setBankInfo] = useState<PrivateBankInfo | null>(null)
   useEffect(() => { loadPrivateBank().then(setBankInfo) }, [])
   const [cfg, setCfg] = useState<Partial<ExamConfig>>({})
+  const [startMode, setStartMode] = useState<'exam' | 'focus'>('exam')
 
   const update = useCallback((fn: (p: Session, t: number) => Session) => {
     setS((p) => {
@@ -66,11 +71,33 @@ export default function App() {
   const start = (pid: string) => {
     const profile = PROFILES.find((p) => p.id === pid)!
     const p = { ...profile, config: { ...profile.config, ...cfg } }
-    const n = createSession(p, QUESTIONS, Date.now())
+    const now = Date.now()
+    const n = createSession(p, QUESTIONS, now, { seed: now.toString(36) })
     save(n)
     setMemo(''); setPaint('')
     setS(n)
     enterFs()
+  }
+
+  const startFocus = (request: FocusRequest) => {
+    const base = PROFILES[0].sections.find((x) => x.id === request.section)!
+    const profile: ExamProfile = {
+      id: `focus-${request.section}`,
+      name: `${base.name} 유형 집중`,
+      sections: [{ ...base, count: request.count, limitSec: request.limitSec }],
+      config: { ...PROFILES[0].config, ...cfg, breakSec: 0 },
+      note: '선택한 조건에 맞춘 유형 집중 훈련',
+    }
+    const now = Date.now()
+    const n = createSession(profile, QUESTIONS, now, {
+      seed: request.seed,
+      subtypes: request.subtypes,
+      difficulties: request.difficulties,
+      review: request.review,
+      history: loadHistory(),
+    })
+    save(n)
+    setMemo(''); setPaint(''); setS(n); enterFs()
   }
 
   const home = () => { save(null); setS(null); if (document.fullscreenElement) document.exitFullscreen() }
@@ -86,12 +113,16 @@ export default function App() {
       <div className="start" data-testid="start">
         <div className="logo">SKCT 인지검사 연습 시뮬레이터</div>
         <p className="disclaimer">개인 학습용 비공식 시뮬레이터입니다. SK그룹·SKCT 운영 주체와 제휴/승인 관계가 없으며, 문제는 자체 제작 연습문제입니다(실제 기출 아님).</p>
+        <div className="mode-tabs" role="tablist">
+          <button className={startMode === 'exam' ? 'on' : ''} onClick={() => setStartMode('exam')}>실전 모드</button>
+          <button className={startMode === 'focus' ? 'on' : ''} data-testid="mode-focus" onClick={() => setStartMode('focus')}>유형 집중 모드</button>
+        </div>
         <div className="opts">
           <label><input type="checkbox" checked={cfg.allowBack ?? false} onChange={(e) => setCfg({ ...cfg, allowBack: e.target.checked })} /> 이전 문항 복귀 허용 (실제 규칙 미확인)</label>
           <label><input type="checkbox" checked={cfg.allowSkip ?? true} onChange={(e) => setCfg({ ...cfg, allowSkip: e.target.checked })} /> 미응답으로 다음 문항 이동 허용</label>
           <label><input type="checkbox" checked={cfg.toolsPersist ?? true} onChange={(e) => setCfg({ ...cfg, toolsPersist: e.target.checked })} /> 문항 이동 시 메모·그림판 유지</label>
         </div>
-        {PROFILES.map((p) => {
+        {startMode === 'exam' && PROFILES.map((p) => {
           const ok = p.sections.every((sec) => QUESTIONS.filter((q) => q.section === sec.id && q.verification !== 'unverified').length >= sec.count)
           return (
             <div className="profile" key={p.id}>
@@ -100,13 +131,14 @@ export default function App() {
             </div>
           )
         })}
+        {startMode === 'focus' && <FocusSetup questions={QUESTIONS} onStart={startFocus} />}
         {bankInfo?.available && (
           <small className="hint" data-testid="bank-info">
             비공개 문제은행: {bankInfo.loaded}문항 로드{bankInfo.unverified ? ` (검증 대기 ${bankInfo.unverified}문항은 모의고사 제외)` : ''}
             {bankInfo.errors.length ? ` · 오류 ${bankInfo.errors.length}건: ${bankInfo.errors.slice(0, 3).join(' / ')}` : ''}
           </small>
         )}
-        <Dashboard />
+        {startMode === 'exam' && <Dashboard />}
         <small className="hint">시작하면 전체화면으로 전환됩니다 (1920×1080 기준 화면을 비례 축소/확대).</small>
       </div>
     )

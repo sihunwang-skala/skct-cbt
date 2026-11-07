@@ -1,10 +1,12 @@
 import type { ExamProfile, Question, Session } from './types'
+import { selectQuestions, type QuestionSelection } from './selection'
 
 // 모든 시간 로직은 now(ms)를 인자로 받는 순수 함수 → 렌더링 주기와 무관, 테스트 가능.
 
-export function createSession(profile: ExamProfile, bank: Question[], now: number): Session {
+export function createSession(profile: ExamProfile, bank: Question[], now: number, options?: QuestionSelection): Session {
+  const selection: QuestionSelection = options ?? { seed: String(now) }
   const sectionQuestions = profile.sections.map((sec) =>
-    bank.filter((q) => q.section === sec.id && q.verification !== 'unverified').slice(0, sec.count).map((q) => q.id),
+    selectQuestions(bank, sec.id, sec.count, selection).map((q) => q.id),
   )
   return {
     id: `s${now}`,
@@ -23,6 +25,7 @@ export function createSession(profile: ExamProfile, bank: Question[], now: numbe
     answers: {},
     changes: {},
     timeSpent: {},
+    selectionSeed: selection.seed,
   }
 }
 

@@ -73,4 +73,5 @@ export interface Session {
   answers: Record<string, number | null>
   changes: Record<string, number> // 답안 변경 횟수
   timeSpent: Record<string, number> // ms
+  selectionSeed?: string // 같은 seed를 입력하면 동일한 문제 순서를 재현
 }
