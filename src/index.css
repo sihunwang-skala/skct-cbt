@@ -93,3 +93,4 @@ details.ok summary { color:#0a6; } details.ng summary { color:#c00; }
 .qpane.wide { padding-right:0; }
 .choices { gap:0 !important; } .choices button { padding:7px 16px !important; }
 .qimg { max-width:100%; max-height:520px; display:block; margin:0 0 24px; border:1px solid var(--line); }
+.homebtn { background:rgba(255,255,255,.18); color:#fff; border:1px solid rgba(255,255,255,.6); border-radius:6px; padding:6px 16px; font-size:20px; margin-right:36px; } .homebtn:hover { background:rgba(255,255,255,.3); }

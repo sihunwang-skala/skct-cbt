@@ -118,6 +118,7 @@ export default function App() {
         <h1>{s.sections[s.sectionIdx].name} 영역 준비</h1>
         <p>잠시 후 다음 영역이 시작됩니다.</p>
         <b className="bigtime" data-testid="break-time">{Math.ceil(remainingMs(s, now) / 1000)}</b>
+        <button className="btn ghost" data-testid="break-home" onClick={home}>⌂ 처음으로</button>
         <button className="btn primary" onClick={() => update((p, t) => ({ ...p, breakDeadline: t }))}>바로 시작</button>
       </div>
     )
@@ -127,6 +128,7 @@ export default function App() {
         s={s} now={now} memo={memo} paint={paint} setMemo={setMemo} setPaint={setPaint}
         onSelect={(c) => update((p, t) => select(p, c, t))}
         onGoto={onGoto}
+        onHome={home}
         onFinishSection={() => { update(finishSection); setMemo(''); setPaint('') }}
       />
     )

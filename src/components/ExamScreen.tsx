@@ -20,11 +20,13 @@ interface Props {
   onSelect: (c: number) => void
   onGoto: (i: number) => void
   onFinishSection: () => void
+  onHome: () => void
 }
 
-export function ExamScreen({ s, now, memo, paint, setMemo, setPaint, onSelect, onGoto, onFinishSection }: Props) {
+export function ExamScreen({ s, now, memo, paint, setMemo, setPaint, onSelect, onGoto, onFinishSection, onHome }: Props) {
   const [tab, setTab] = useState<'memo' | 'paint'>('memo')
   const [confirm, setConfirm] = useState(false)
+  const [homeAsk, setHomeAsk] = useState(false)
   const sec = s.sections[s.sectionIdx]
   const ids = s.sectionQuestions[s.sectionIdx]
   const q = BANK[currentId(s)]
@@ -37,6 +39,7 @@ export function ExamScreen({ s, now, memo, paint, setMemo, setPaint, onSelect, o
     <div className="exam" data-testid="exam">
       <header className="topbar">
         <div className="title">{sec.name}</div>
+        <button className="homebtn" data-testid="home" onClick={() => setHomeAsk(true)}>⌂ 처음으로</button>
         <div className="timer">
           남은 시간 <b data-testid="timer" className={rem < 60000 ? 'warn' : ''}>{fmt(rem)}</b>
         </div>
@@ -112,6 +115,18 @@ export function ExamScreen({ s, now, memo, paint, setMemo, setPaint, onSelect, o
         </div>
       </footer>
 
+      {homeAsk && (
+        <div className="modal" data-testid="home-confirm">
+          <div className="dialog">
+            <p>시험을 중단하고 처음 화면으로 돌아갈까요?</p>
+            <p className="sub">진행 중인 시험 기록은 저장되지 않고 사라집니다.</p>
+            <div className="row">
+              <button className="btn ghost" onClick={() => setHomeAsk(false)}>계속 풀기</button>
+              <button className="btn primary" data-testid="home-yes" onClick={onHome}>처음으로</button>
+            </div>
+          </div>
+        </div>
+      )}
       {confirm && (
         <div className="modal" data-testid="confirm">
           <div className="dialog">

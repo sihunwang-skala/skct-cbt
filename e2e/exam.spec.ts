@@ -128,3 +128,16 @@ test('fullscreen exit warning appears', async ({ page }) => {
   await page.evaluate(() => document.dispatchEvent(new Event('fullscreenchange')))
   await expect(page.getByTestId('fs-warning')).toBeVisible()
 })
+
+test('home button returns to start after confirm, and cancel keeps exam', async ({ page }) => {
+  await page.getByTestId(SAMPLE).click()
+  await page.getByTestId('choice-0').click()
+  await page.getByTestId('home').click()
+  await page.getByRole('button', { name: '계속 풀기' }).click()
+  await expect(page.getByTestId('choice-0')).toHaveClass(/sel/)
+  await page.getByTestId('home').click()
+  await page.getByTestId('home-yes').click()
+  await expect(page.getByTestId('start')).toBeVisible()
+  await page.reload()
+  await expect(page.getByTestId('start')).toBeVisible() // 세션이 남지 않음
+})
