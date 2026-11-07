@@ -94,3 +94,6 @@ details.ok summary { color:#0a6; } details.ng summary { color:#c00; }
 .choices { gap:0 !important; } .choices button { padding:7px 16px !important; }
 .qimg { max-width:100%; max-height:520px; display:block; margin:0 0 24px; border:1px solid var(--line); }
 .homebtn { background:rgba(255,255,255,.18); color:#fff; border:1px solid rgba(255,255,255,.6); border-radius:6px; padding:6px 16px; font-size:20px; margin-right:36px; } .homebtn:hover { background:rgba(255,255,255,.3); }
+.topbar .timer { width:340px; text-align:right; white-space:nowrap; }
+.topbar .timer b { display:inline-block; width:140px; text-align:left; margin-left:12px; }
+.topbar .timer b span { display:inline-block; text-align:center; } .topbar .timer b .dg { width:.62em; } .topbar .timer b .colon { width:.3em; }

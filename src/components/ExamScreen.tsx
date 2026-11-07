@@ -41,7 +41,9 @@ export function ExamScreen({ s, now, memo, paint, setMemo, setPaint, onSelect, o
         <div className="title">{sec.name}</div>
         <button className="homebtn" data-testid="home" onClick={() => setHomeAsk(true)}>⌂ 처음으로</button>
         <div className="timer">
-          남은 시간 <b data-testid="timer" className={rem < 60000 ? 'warn' : ''}>{fmt(rem)}</b>
+          남은 시간 <b data-testid="timer" aria-label={fmt(rem)} className={rem < 60000 ? 'warn' : ''}>
+            {[...fmt(rem)].map((c, i) => <span key={i} className={c === ':' ? 'colon' : 'dg'}>{c}</span>)}
+          </b>
         </div>
       </header>
       <div className="timebar"><i style={{ width: `${(rem / (sec.limitSec * 1000)) * 100}%` }} /></div>

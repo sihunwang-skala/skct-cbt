@@ -141,3 +141,18 @@ test('home button returns to start after confirm, and cancel keeps exam', async 
   await page.reload()
   await expect(page.getByTestId('start')).toBeVisible() // 세션이 남지 않음
 })
+
+test('timer digits do not shift layout as time changes', async ({ page }) => {
+  await page.getByTestId(SAMPLE).click()
+  const pos = async () => page.evaluate(() => {
+    const r = (e: Element) => e.getBoundingClientRect().left
+    return [...document.querySelectorAll('[data-testid=timer] span')].map(r).concat(r(document.querySelector('.topbar .timer')!))
+  })
+  const a = await pos()
+  await page.waitForTimeout(1300)
+  const b = await pos()
+  expect(b).toEqual(a)
+  // 숫자 폭이 달라지는 시각(11:11 vs 04:00)에서도 동일 폭
+  const w = await page.evaluate(() => (document.querySelector('[data-testid=timer]') as HTMLElement).offsetWidth)
+  expect(w).toBe(140)
+})
