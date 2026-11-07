@@ -12,7 +12,9 @@ function privateBank(): Plugin {
   const mw = (req: any, res: any, next: () => void) => {
     const url = String(req.url ?? '').split('?')[0]
     if (!url.startsWith('/__private/')) return next()
-    if (!local.includes(req.socket.remoteAddress)) { res.statusCode = 403; return res.end('forbidden') }
+    const host = String(req.headers.host ?? '').replace(/:\d+$/, '')
+    // loopback 접속 + localhost Host 헤더만 허용(DNS rebinding 방지)
+    if (!local.includes(req.socket.remoteAddress) || !['localhost', '127.0.0.1', '[::1]'].includes(host)) { res.statusCode = 403; return res.end('forbidden') }
     res.setHeader('Cache-Control', 'no-store')
     if (url === '/__private/bank.json') {
       const dir = path.join(root, 'bank')
