@@ -26,7 +26,7 @@ test('start screen → exam screen at 1920x1080 (screenshots)', async ({ page })
 test('layout scales to a laptop viewport without clipping', async ({ page }) => {
   await page.setViewportSize({ width: 1512, height: 860 })
   await page.getByTestId(SAMPLE).click()
-  await expect(page.locator('.stage')).toHaveAttribute('data-scale', /^0\.79/) // 리사이즈 반영 대기(플레이키 방지)
+  await expect(page.locator('.stage')).toHaveAttribute('data-scale', /^0\.78/) // 리사이즈 반영 대기(플레이키 방지)
   await page.screenshot({ path: 'e2e/shots/02-verbal-1512x860.png' })
   const b = await page.locator('.stage').boundingBox()
   expect(b!.x).toBeGreaterThanOrEqual(-1); expect(b!.y).toBeGreaterThanOrEqual(-1)
