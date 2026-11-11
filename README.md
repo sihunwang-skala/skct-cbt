@@ -12,6 +12,17 @@ SKCT 인지검사 온라인 응시 화면을 최대한 비슷하게 재현하는
 - 미풀이, 최근 오답, 최근 시간 초과 문항만 골라 재훈련 가능. 동일한 Random Seed로 같은 세트 재현
 - 문제은행: 자체 제작 15문항(공식 기출 아님), 계산형·논리형은 `src/data/questions.test.ts`에서 독립 검증
 
+## 화면 (1920×1080 기준, 개인 학습용 재현 — 공식 화면이 아닙니다)
+| 시작 | 언어이해 (도구 없음, 전체 폭) |
+|---|---|
+| ![시작](docs/screenshots/start.png) | ![언어이해](docs/screenshots/verbal.png) |
+
+| 창의수리 (메모장·그림판 탭 + 계산기) | 자료해석 (표) |
+|---|---|
+| ![창의수리](docs/screenshots/math-tools.png) | ![자료해석](docs/screenshots/data-table.png) |
+
+![결과](docs/screenshots/result.png)
+
 ## 실행
 ```bash
 npm install
