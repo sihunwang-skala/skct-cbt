@@ -1,47 +1,51 @@
-# SKCT 연습 시뮬레이터 (비공식)
+**English** · [한국어](README.ko.md)
 
-> **비공식 개인 학습용 프로젝트입니다.** SK그룹, SK㈜ C&C 및 SKCT 운영 주체와 제휴·후원·승인 관계가 없으며, 공식 검사 프로그램이 아닙니다. "SKCT" 등 명칭은 이 연습 도구가 어떤 검사를 준비하기 위한 것인지 설명하는 용도로만 사용하며, 관련 상표·로고·이미지·소스코드·실제 시험 문항을 포함하지 않습니다.
+# SKCT Practice Simulator (Unofficial)
 
-SKCT 인지검사 온라인 응시 화면을 최대한 비슷하게 재현하는 **개인 학습용** CBT. SK그룹/공식 SKCT와 무관합니다.
+> **This is an unofficial personal study project.** It is not affiliated with, sponsored by, or approved by SK Group, SK C&C, or the operators of SKCT, and it is not an official test program. Names such as "SKCT" are used only to describe which test this practice tool prepares for; it contains no related trademarks, logos, images, source code, or real exam questions.
 
-- 1920×1080 고정 스테이지를 뷰포트에 맞춰 비례 축소 → 어떤 모니터에서도 실전 화면 비율 유지
-- 영역별 마감시각 기반 타이머(새로고침·백그라운드에도 정확), 영역 사이 휴식 1분
-- 언어이해: 도구 없음(문제 전체 폭) / 그 외: 메모장·그림판 탭 + 계산기
-- 시험 중 정답·해설 비노출, 종료 후 채점·복기·학습 기록 대시보드
-- 실전 모드는 매회 Seed 기반 무작위 출제, 유형 집중 모드는 영역, 세부 유형, 난도, 학습 상태, 문항 수, 시간 필터 지원
-- 미풀이, 최근 오답, 최근 시간 초과 문항만 골라 재훈련 가능. 동일한 Random Seed로 같은 세트 재현
-- 문제은행: 자체 제작 15문항(공식 기출 아님), 계산형·논리형은 `src/data/questions.test.ts`에서 독립 검증
+A **personal-study** CBT that recreates the SKCT cognitive-ability online test screen as closely as possible. It has no relation to SK Group or the official SKCT.
 
-## 화면 (1920×1080 기준, 개인 학습용 재현 — 공식 화면이 아닙니다)
-| 시작 | 언어이해 (도구 없음, 전체 폭) |
+- A fixed 1920×1080 stage is scaled proportionally to the viewport → the real test's screen ratio is kept on any monitor
+- Per-section deadline-based timer (accurate across refresh and background), 1-minute break between sections
+- Verbal comprehension: no tools (full-width questions) / other sections: notepad and paint tabs + calculator
+- Answers and explanations hidden during the test; scoring, review and a study-record dashboard after it ends
+- Real-test mode draws questions randomly with a new seed each time; focus mode filters by section, sub-type, difficulty, study status, question count and time
+- Retrain on only unsolved, recently wrong, or recently timed-out questions. The same random seed reproduces the same set
+- Question bank: 15 self-written questions (not official past exams); calculation and logic items are independently verified in `src/data/questions.test.ts`
+
+## Screens (at 1920×1080, a personal-study recreation — not the official screens)
+| Start | Verbal comprehension (no tools, full width) |
 |---|---|
-| ![시작](docs/screenshots/start.png) | ![언어이해](docs/screenshots/verbal.png) |
+| ![Start](docs/screenshots/start.png) | ![Verbal comprehension](docs/screenshots/verbal.png) |
 
-| 창의수리 (메모장·그림판 탭 + 계산기) | 자료해석 (표) |
+| Creative math (notepad / paint tabs + calculator) | Data interpretation (table) |
 |---|---|
-| ![창의수리](docs/screenshots/math-tools.png) | ![자료해석](docs/screenshots/data-table.png) |
+| ![Creative math](docs/screenshots/math-tools.png) | ![Data interpretation](docs/screenshots/data-table.png) |
 
-![결과](docs/screenshots/result.png)
+![Result](docs/screenshots/result.png)
 
-## 실행
+> The app UI itself is in Korean, so the screenshots are shared by both language versions.
+
+## Run
 ```bash
 npm install
 npm run dev      # http://localhost:5173
-npm test         # 단위 테스트
-npm run e2e      # Playwright (스크린샷: e2e/shots)
-npm run privacy-check # private 자료가 index·staging·history·build에 없는지 검사
-npm run generate-bank # Notion 유형 체계를 반영한 자체 생성 문제를 private/bank에 생성
+npm test         # unit tests
+npm run e2e      # Playwright (screenshots: e2e/shots)
+npm run privacy-check # checks that private material is not in the index, staging, history or build
+npm run generate-bank # generates self-made questions into private/bank following the Notion type scheme
 ```
 
-`npm install` 시 `.githooks`가 활성화되고, push 직전에 privacy check가 자동 실행됩니다. `git commit`은 로컬 기록만 만들며 원격 전송은 `git push` 또는 별도 Sync를 실행할 때만 발생합니다.
+`npm install` enables `.githooks`, and the privacy check runs automatically right before a push. `git commit` only makes a local record; nothing is sent to the remote unless you run `git push` or a separate Sync.
 
-## 근거와 미확인 사항
-- 확인: 공식 응시자 안내서(영역당 20문항·15분, 권장 1920×1080, 전체화면), 사용자 기억(쉬는 시간 1분, 언어이해만 도구 없음)
-- 미확인(설정 가능): 이전 문항 복귀, 계산기 연산 순서·키 배열, 메모/그림판 세부 기능
+## Basis and unverified points
+- Confirmed: the official candidate guide (20 questions and 15 minutes per section, recommended 1920×1080, full screen) and the author's recollection (1-minute break, only verbal comprehension has no tools)
+- Unverified (configurable): going back to a previous question, the calculator's operation order and key layout, detailed notepad / paint features
 
-## 저작권·법적 고지
-- 이 저장소의 문제는 모두 **자체 제작한 연습문제**이며 실제 SKCT 기출·복원 문항이 아닙니다. 점수는 연습용 지표로 공식 점수나 합격 가능성이 아닙니다.
-- 시판 교재·e-book·유료 자료·실제 시험 문항을 이 저장소에 올리지 마세요. 개인 자료는 `private/` 폴더(git 무시됨)에만 두고 본인 학습에만 사용합니다. DRM 우회 기능은 제공하지 않습니다.
-- 공식 응시 프로그램의 화면 캡처·자산·코드는 포함하지 않으며, 화면은 공개된 응시자 안내서의 일반 정보와 사용자의 기억을 바탕으로 새로 구현했습니다.
-- 사용에 따른 책임은 사용자에게 있으며, 본 문서는 법률 자문이 아닙니다. 권리자의 요청이 있으면 해당 내용을 삭제합니다.
-- 코드는 [MIT License](LICENSE)입니다(문제 데이터 포함, 상표·제3자 자료 제외).
+## Copyright and legal notice
+- Every question in this repository is a **self-made practice question**, not a real SKCT past or reconstructed question. Scores are practice indicators, not official scores or a chance of passing.
+- Do not upload commercial textbooks, e-books, paid material, or real exam questions here. Keep personal material only in the `private/` folder (git-ignored) and use it only for your own study. No DRM-bypass feature is provided.
+- No screen captures, assets, or code from the official test program are included; the screens were newly built from general information in the public candidate guide and the author's recollection.
+- Users are responsible for their own use, and this document is not legal advice. Content will be removed at the rights holder's request.
+- The code is under the [MIT License](LICENSE) (including question data, excluding trademarks and third-party material).
